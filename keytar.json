@@ -1,9 +1,3 @@
 {
-	"env": [
-		{
-			"KEYTAR": "/path/to/keytar/"
-		},
-	],
-	"path": "$KEYTAR"
-
+    "path" : "/path/to/hou-keytar/keytar"
 }
