@@ -8,3 +8,5 @@ Scale / translate / flip keyframes
 
 ### Breakdown tool
 Insert breakdown keys, ala the venerable TweenMachine
+
+## Installation
