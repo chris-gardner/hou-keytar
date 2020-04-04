@@ -3,7 +3,11 @@
 """
 Transform keyframes in Houdini's animation editor
 
-scale then translate keyframes with adjustable pivots
+scale then translate keyframes with adjustable pivots\
+
+@todo: manual pivot ui
+@todo: value pivot around parm default
+
 """
 
 import hou
@@ -18,6 +22,21 @@ def transformKeyframes(keyframes, scalex=1.0, scaley=1.0,
                        ripple=True,
                        snapframe=True
                        ):
+    """
+    Transform a set of keyframes
+    
+    @param keyframes: Dict of keyframes, with the parm as the key
+    @param scalex: Scale factor for x axis
+    @param scaley: Scale factor for y axis
+    @param translatex: Translation for x axis
+    @param translatey: Translation for y axis
+    @param pivotx: Manual pivot for x axis
+    @param pivoty: Manual pivot for y axis
+    @param autopivot: Automatic pivot location. Possible values are tl, tm, tr, ml, mm, mr, bl, bm, br
+    @param ripple: Move keys outside of the selection range for x axis operations
+    @param snapframe: Snap key times to whole frames for x axis operations
+    """
+    
     xmin = 99999999999999
     xmax = -99999999999999
     
@@ -251,7 +270,7 @@ class TransformKeysUi(QtWidgets.QDialog):
         groupBox.setLayout(pv_lay)
         pv_lay.addLayout(pv_grid)
         
-        pv0 = QtWidgets.QRadioButton('⌜')
+        pv0 = QtWidgets.QRadioButton()
         pv0.setProperty('align', 'tl')
         pv0.setToolTip('Top Left')
         pv_grid.addWidget(pv0, 0, 0)
@@ -261,7 +280,7 @@ class TransformKeysUi(QtWidgets.QDialog):
         pv1.setToolTip('Top Middle')
         pv_grid.addWidget(pv1, 0, 1)
         
-        pv2 = QtWidgets.QRadioButton('⌝')
+        pv2 = QtWidgets.QRadioButton()
         pv2.setProperty('align', 'tr')
         pv2.setToolTip('Top Right')
         pv_grid.addWidget(pv2, 0, 2)
@@ -282,7 +301,7 @@ class TransformKeysUi(QtWidgets.QDialog):
         pv5.setToolTip('Middle Right')
         pv_grid.addWidget(pv5, 1, 2)
         
-        pv6 = QtWidgets.QRadioButton('⌞')
+        pv6 = QtWidgets.QRadioButton()
         pv6.setProperty('align', 'bl')
         pv6.setToolTip('Bottom Left')
         pv_grid.addWidget(pv6, 2, 0)
@@ -292,7 +311,7 @@ class TransformKeysUi(QtWidgets.QDialog):
         pv7.setToolTip('Bottom Middle')
         pv_grid.addWidget(pv7, 2, 1)
         
-        pv8 = QtWidgets.QRadioButton('⌟')
+        pv8 = QtWidgets.QRadioButton()
         pv8.setProperty('align', 'br')
         pv8.setToolTip('Bottom Right')
         pv_grid.addWidget(pv8, 2, 2)
