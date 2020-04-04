@@ -1,5 +1,7 @@
+# -*- coding: UTF-8 -*-
+
 """
-Transform keyframes
+Transform keyframes in Houdini's animation editor
 
 scale then translate keyframes with adjustable pivots
 """
@@ -408,5 +410,5 @@ class TransformKeysUi(QtWidgets.QDialog):
                                    autopivot=pivot)
 
 
-x = TransformKeysUi()
-x.show()
+# x = TransformKeysUi()
+# x.show()
