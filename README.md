@@ -1,5 +1,5 @@
 # hou-keytar
-Houdini keyframe tools
+Houdini keyframe tools. Because sometimes you just need to manipulate keyframes by hand.
 
 
 ## Tools
