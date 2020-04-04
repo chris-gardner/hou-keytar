@@ -1,3 +1,10 @@
+# -*- coding: UTF-8 -*-
+"""
+Keyframe breakdown tool for Houdini's animation editor
+"""
+
+import hou
+
 from PySide2 import QtWidgets, QtCore
 from functools import partial
 from fractions import Fraction
@@ -113,8 +120,9 @@ class TweenMachineUi(QtWidgets.QDialog):
             chan = hou.parm(x)
             # only operate on channels that are visible in the graph editor
             if chan.isSelected():
-                tween(chan, hou.frame(), blend)
+                with hou.undos.group('tweenmachine'):
+                    tween(chan, hou.frame(), blend)
 
 
-x = TweenMachineUi()
-x.show()
+# x = TweenMachineUi()
+# x.show()
