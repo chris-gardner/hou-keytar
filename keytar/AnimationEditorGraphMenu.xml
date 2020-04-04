@@ -2,7 +2,7 @@
 <mainMenu>
 <menuBar>
         <subMenu id="keytar_menu">
-        <label>[Keytar]</label>
+        <label>[KeyTAR]</label>
 
 
         <scriptItem id="h.pane.chedit.graph.kt_transformkeys">
