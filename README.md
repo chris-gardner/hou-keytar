@@ -9,6 +9,9 @@ Scale / translate / flip keyframes
 ### Breakdown tool
 Insert breakdown keys, ala the venerable TweenMachine
 
+### Camera space nudge
+Transform an object and it's keyframes in camera view space
+
 ## Installation
 
 ### Houdini 17.5+
