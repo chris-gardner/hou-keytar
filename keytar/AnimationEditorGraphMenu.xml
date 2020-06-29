@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mainMenu>
-<menuBar>
+    <menuBar>
         <subMenu id="keytar_menu">
-        <label>[KeyTAR]</label>
+            <label>[KeyTAR]</label>
 
 
-        <scriptItem id="h.pane.chedit.graph.kt_transformkeys">
-       	    <label>Transform Keys...</label>
-            <scriptCode><![CDATA[
+            <scriptItem id="h.pane.chedit.graph.kt_transformkeys">
+                <label>Transform Keys...</label>
+                <scriptCode><![CDATA[
 import transformkeys
 x = transformkeys.TransformKeysUi()
 x.show()
             ]]></scriptCode>
-       	</scriptItem>
+            </scriptItem>
 
-        <scriptItem id="h.pane.chedit.graph.kt_tweenmachine">
-       	    <label>Tweenmachine...</label>
-            <scriptCode><![CDATA[
+            <scriptItem id="h.pane.chedit.graph.kt_camnudgekeys">
+                <label>Camera Nudge...</label>
+                <scriptCode><![CDATA[
+import cam_space_transform
+x = cam_space_transform.CameraSpaceNudgeUi()
+x.show()
+            ]]></scriptCode>
+            </scriptItem>
+
+            <scriptItem id="h.pane.chedit.graph.kt_tweenmachine">
+                <label>Tweenmachine...</label>
+                <scriptCode><![CDATA[
 import tweenmachine
 x = tweenmachine.TweenMachineUi()
 x.show()
             ]]></scriptCode>
-       	</scriptItem>
+            </scriptItem>
 
 
-        <scriptItem id="h.pane.chedit.graph.kt_removeflat">
-       	    <label>Remove Flat Keys</label>
-            <scriptCode><![CDATA[
+            <scriptItem id="h.pane.chedit.graph.kt_removeflat">
+                <label>Remove Flat Keys</label>
+                <scriptCode><![CDATA[
 import remove_flat_keys
 remove_flat_keys.remove_static_ui()
             ]]></scriptCode>
-       	</scriptItem>
-
+            </scriptItem>
+        </subMenu>
     </menuBar>
 </mainMenu>
