@@ -123,14 +123,12 @@ class CameraChooserEdit(QtWidgets.QLineEdit):
         data = mime_data.data(hou.qt.mimeType.nodePath)
         if not data.isEmpty():
             node_path = str(data)
-            print node_path
             node = hou.node(node_path)
-            print node
-            print node.type().name()
             if node.type().name() == 'cam':
                 self.setText(node_path)
             else:
-                print 'rejecting node:'
+                QtWidgets.QMessageBox.warning(self, 'Problems!',
+                                              'Thats not a camera')
         event.accept()
 
 
@@ -151,17 +149,15 @@ class ParmChooserEdit(QtWidgets.QLineEdit):
         data = mime_data.data(hou.qt.mimeType.parmPath)
         if not data.isEmpty():
             parm_paths = str(data).split("\t")
-            print parm_paths
             parm_path = parm_paths[0]
-            print parm_path
             parm = hou.parm(parm_path)
-            print parm
             if parm:
                 parm_tuple = parm.tuple()
                 if len(parm_tuple) == 3:
                     self.setText(parm.tuple().name())
                 else:
-                    print 'not a vector 3 typeish parm'
+                    QtWidgets.QMessageBox.warning(self, 'Problems!',
+                                                  'Select a vector3 type parm')
         event.accept()
 
 
@@ -191,28 +187,26 @@ class CameraSpaceNudgeUi(QtWidgets.QDialog):
     
     def camera_edit_changed(self):
         self.camera = self.camera_edit.text()
-        print "camera changed", self.camera
     
     
     def parm_edit_changed(self):
         self.parm = self.parm_edit.text()
-        print "self.parm changed", self.parm
     
     
-    def onCameraSelected(self, node_path):
+    def camera_selected(self, node_path):
         self.camera = node_path.path()
         self.camera_edit.setText(self.camera)
     
     
-    def onParmSelected(self, node_path):
-        print node_path
+    def parm_selected(self, node_path):
         if node_path:
             parm_tuple = node_path[0]
             if len(parm_tuple) == 3:
                 self.parm = parm_tuple.name()
                 self.parm_edit.setText(self.parm)
             else:
-                print 'not a vector3 type ish parmTuple'
+                QtWidgets.QMessageBox.warning(self, 'Problems!',
+                                              'Select a vector3 type parm')
     
     
     def time_range_changed(self):
@@ -239,7 +233,7 @@ class CameraSpaceNudgeUi(QtWidgets.QDialog):
         
         node_chooser_btn = hou.qt.NodeChooserButton()
         node_chooser_btn.setNodeChooserFilter(hou.nodeTypeFilter.ObjCamera)
-        node_chooser_btn.nodeSelected.connect(self.onCameraSelected)
+        node_chooser_btn.nodeSelected.connect(self.camera_selected)
         camera_lay.addWidget(node_chooser_btn)
         
         parm_lay = QtWidgets.QHBoxLayout()
@@ -253,7 +247,7 @@ class CameraSpaceNudgeUi(QtWidgets.QDialog):
         parm_lay.addWidget(self.parm_edit)
         
         node_chooser_btn = hou.qt.ParmTupleChooserButton()
-        node_chooser_btn.parmTupleSelected.connect(self.onParmSelected)
+        node_chooser_btn.parmTupleSelected.connect(self.parm_selected)
         parm_lay.addWidget(node_chooser_btn)
         
         time_lay = QtWidgets.QHBoxLayout()
@@ -325,7 +319,8 @@ class CameraSpaceNudgeUi(QtWidgets.QDialog):
     def move(self, x=0, y=0, z=0):
         camera = hou.node(self.camera)
         if not camera:
-            raise RuntimeError("cannot find camera")
+            QtWidgets.QMessageBox.warning(self, 'Problems!', 'Cannot find a camera')
+            return
         
         amount = self.nudge_amount.value()
         
@@ -334,9 +329,8 @@ class CameraSpaceNudgeUi(QtWidgets.QDialog):
         z_offset = z * amount
         
         current_frame = hou.frame()
-        with hou.undos.group('Camera NudgeKeys'):
+        with hou.undos.group('Camera Nudge Keys'):
             for node in hou.selectedNodes():
-                print node
                 keytimes = []
                 parmTuple = node.parmTuple(self.parm)
                 if parmTuple:
@@ -351,13 +345,17 @@ class CameraSpaceNudgeUi(QtWidgets.QDialog):
                         keytimes = sorted(list(set(keytimes)))
                         if self.time_range == 'sel':
                             sel_range = hou.playbar.selectionRange()
+                            if not sel_range:
+                                QtWidgets.QMessageBox.warning(self, 'Problems!',
+                                                              'Select a range on the timeline')
+                                return
+                            
                             keytimes = [x for x in keytimes if x >= sel_range[0] and x <= sel_range[1]]
-                    
-                    print keytimes
                     
                     for keytime in keytimes:
                         hou.setFrame(keytime)
                         pos = hou.Vector3(parmTuple.eval())
                         new_pos = cam_space_nudge(pos, camera, x=x_offset, y=y_offset, z=z_offset)
                         parmTuple.set(new_pos)
+        
         hou.setFrame(current_frame)
