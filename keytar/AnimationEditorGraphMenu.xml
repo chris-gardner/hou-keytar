@@ -15,7 +15,7 @@ x.show()
             </scriptItem>
 
             <scriptItem id="h.pane.chedit.graph.kt_camnudgekeys">
-                <label>Camera Nudge...</label>
+                <label>Camera Space Nudge...</label>
                 <scriptCode><![CDATA[
 import cam_space_transform
 x = cam_space_transform.CameraSpaceNudgeUi()
