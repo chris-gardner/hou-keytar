@@ -40,18 +40,14 @@ def remove_static(node, children=False):
     
     if children:
         if not node.isLockedHDA():
-            print 'i am unlocked!!'
             for n in node.allSubChildren():
-                print n.path()
                 remove_static(n)
 
 
 def remove_static_ui():
     if hou.selectedNodes():
         start_nodes = hou.selectedNodes()
-    else:
-        start_nodes = [hou.node("/")]
     
-    with hou.undos.group('Remove Flat Keys'):
-        for node in start_nodes:
-            remove_static(node)
+        with hou.undos.group('Remove Flat Keys'):
+            for node in start_nodes:
+                remove_static(node)
